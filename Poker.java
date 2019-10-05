@@ -1,13 +1,9 @@
-package simple;
-
-import java.util.Scanner;
-
-public class Poker {
+public class Main {
 	static class Card implements Comparable<Card>{
 		private char suit; 
 		private String rank;
 		private String[] allSuites = {"S", "H", "C", "D"};
-		private String[] allRanks = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K" };
+		private String[] allRanks = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K" };
 		// default constructor 
 		public Card(){
 			suit = 'D'; 
@@ -15,11 +11,20 @@ public class Poker {
 		}
 		//parameterized constructor 
 		public Card (String rank, char suit){
-
+1
 			// call the default constructor this();
 			// if valid cards are given then update the Card 
 			if (checkValidity(rank, suit)){
-				this.rank = rank; this.suit = suit;}}
+			    rank=rank.toUpperCase();
+			suit=Character.toUpperCase(suit);
+				this.rank = rank; this.suit = suit;}
+			else{
+			    System.out.println("Error: invalid card name "+"\'"+rank+suit+"\'");
+			    
+			}
+		    
+		    
+		}
 
 
 		// method to check for the validity of a Card 
@@ -27,6 +32,8 @@ public class Poker {
 		public boolean checkValidity(String rank, char suit2){
 
 			// check for validity of Suit 
+			rank=rank.toUpperCase();
+			suit2=Character.toUpperCase(suit2);
 			boolean indexSuit = arrayContains(allSuites,suit2); 
 			boolean indexRank = arrayContainsS(allRanks,rank);
 			// check that both rank and suit are valid. 
@@ -42,6 +49,7 @@ public class Poker {
 				if(suit.charAt(0)==suit2){
 					return true;}
 			}
+			
 			return false; 
 
 		}
@@ -144,7 +152,7 @@ public class Poker {
 
 		if (!checkFlush(playerHand)) return false;
 
-		if (!containsCard (playerHand, "10", false))
+		if (!containsCard (playerHand, "T", false))
 			return false; 
 		if(!containsCard (playerHand, "J", false))
 			return false; 
@@ -324,7 +332,7 @@ public class Poker {
 					&& containsCard (playerHand, "5", false))
 				return true; 
 		}
-		else if (containsCard (playerHand, "10", false))
+		else if (containsCard (playerHand, "T", false))
 		{
 			if (containsCard (playerHand, "J", false)
 					&& containsCard (playerHand,"Q", false)
@@ -353,12 +361,12 @@ public class Poker {
 					&& containsCard (playerHand,"7" , false) 
 					&& containsCard (playerHand, "8", false) 
 					&& containsCard (playerHand,"9", false)
-					&& containsCard (playerHand,"10", false))
+					&& containsCard (playerHand,"T", false))
 				return true;
 		}
 		else if (containsCard (playerHand, "6", false))
 		{
-			if (containsCard (playerHand, "10", false)
+			if (containsCard (playerHand, "T", false)
 					&& containsCard (playerHand, "7", false) 
 					&& containsCard (playerHand, "8", false) 
 					&& containsCard (playerHand,"9", false)) 
@@ -366,7 +374,7 @@ public class Poker {
 		}
 		else if (containsCard (playerHand,"7", false)) 
 		{
-			if (containsCard (playerHand, "10", false)
+			if (containsCard (playerHand, "T", false)
 					&& containsCard (playerHand, "J", false) 
 					&& containsCard (playerHand, "8", false) 
 					&& containsCard (playerHand, "9", false)) 
@@ -374,14 +382,14 @@ public class Poker {
 		}
 		else if (containsCard (playerHand, "8", false))
 		{
-			if (containsCard (playerHand, "10", false)
+			if (containsCard (playerHand, "T", false)
 					&& containsCard (playerHand, "J", false) 
 					&& containsCard (playerHand, "Q", false) 
 					&& containsCard (playerHand, "9", false)) 
 				return true;
 		}
 		else if (containsCard (playerHand,"9", false)){
-			if (containsCard (playerHand, "10", false)
+			if (containsCard (playerHand, "T", false)
 					&& containsCard (playerHand, "J", false) 
 					&& containsCard (playerHand,"Q", false) 
 					&& containsCard (playerHand,"K", false))
@@ -399,27 +407,35 @@ public class Poker {
 
 	public static void main(String[] args) {
 		Card[] playerHand=new Card[5];
+		int argslength=args.length;
+		if(argslength>5)
+		    System.out.println("NOT UNDERTAKEN");
+		else if(argslength%5!=0 || argslength<5)
+		    System.out.println("Error: wrong number of arguments; must be multiple of 5");
+		else{
 		for (int i=0; i<args.length;i++){
 			String rank=null;
 			char suit;
-			if(args[i].length()==3){
-				rank=args[i].substring(0,2);
-				suit=args[i].charAt(2);
+			if(args[i].length()>2){
+			    System.out.println("Wrong card UNDERTAKEN");
 			}
 			else{
-				rank=args[i].substring(0,1);
-				suit=args[i].charAt(1);
+			    String card=args[i];
+				rank=card.substring(0,1);
+				suit=card.charAt(1);
+				Card c=new Card(rank,suit);
+			playerHand[i]=c;
 			}
 
-			Card c=new Card(rank,suit);
-			playerHand[i]=c;
+			
 		}
-		for(int i=0;i<playerHand.length;i++){
-			System.out.println("Card "+i+" - "+playerHand[i]);
-		}
+		
+// 		for(int i=0;i<playerHand.length;i++){
+// 			System.out.println("Card "+i+" - "+playerHand[i]);
+// 		}
 		boolean d=checkTwoPair(playerHand);
 		System.out.println("checkTwoPair "+d);
+		}
 
 	}
-
 }
